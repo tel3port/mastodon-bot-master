@@ -94,7 +94,6 @@ class MastodonBot:
         for _ in range(500):
             random_page_num = randint(5, 30000)
             admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
-            print(admin_follower_page_link)
 
             self.driver.get(admin_follower_page_link)
             gls.sleep_time()
@@ -114,7 +113,15 @@ class MastodonBot:
         return sorted_prof_links_list
 
     def user_follower(self, profile_link):
-        pass
+        follow_unfollow_btn_xpath = '//*[contains(@data-method,"post")]'
+        gls.sleep_time()
+        self.driver.get(profile_link)
+        gls.sleep_time()
+        follow_unfollow_element = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable((By.XPATH, follow_unfollow_btn_xpath)))
+        gls.sleep_time()
+        follow_unfollow_element.click()
+        print("user followed or unfollowed!")
+
 
 
 if __name__ == '__main__':
@@ -122,9 +129,12 @@ if __name__ == '__main__':
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
 
-        final_profile_link_list = mst_bot.profile_link_extractor()
+        # final_profile_link_list = mst_bot.profile_link_extractor()
+        #
+        # random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
 
-        random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+        mst_bot.user_follower('https://mastodon.social/@mondomike65')
+
 
 
 
