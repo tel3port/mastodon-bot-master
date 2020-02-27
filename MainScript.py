@@ -85,11 +85,48 @@ class MastodonBot:
             print(traceback.format_exc())
             pass
 
+    def profile_link_extractor(self):
+        gls.sleep_time()
+        sorted_prof_links_list = []
+
+        prof_link_set = set()
+
+        for _ in range(500):
+            random_page_num = randint(5, 30000)
+            admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
+            print(admin_follower_page_link)
+
+            self.driver.get(admin_follower_page_link)
+            gls.sleep_time()
+            self.driver.execute_script("window.scrollBy(0,500)", "")
+            gls.sleep_time()
+            results = self.driver.find_elements_by_xpath('//a[@href]')
+            print(f"number of profile links extracted in this iteration: {len(results)}")
+
+            for res in results:
+                final_link = res.get_attribute('href')
+                prof_link_set.add(final_link)
+
+        for single_link in list(prof_link_set):
+            if "mastodon.social/@" in single_link:
+                sorted_prof_links_list.append(single_link)
+
+        return sorted_prof_links_list
+
+    def user_follower(self, profile_link):
+        pass
+
 
 if __name__ == '__main__':
 
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
+
+        final_profile_link_list = mst_bot.profile_link_extractor()
+
+        random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+
+
 
 
     mastodon_action_sequence()
