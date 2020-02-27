@@ -145,6 +145,7 @@ class MastodonBot:
         formatted_toot = f'hi @{user_handle} {single_comment}'
         print(formatted_toot)
         try:
+            self.driver.execute_script("window.scrollBy(0,500)", "")
             gls.sleep_time()
             self.driver.get(homepage)
             gls.sleep_time()
@@ -189,8 +190,71 @@ class MastodonBot:
 
         return list(status_ids_set)
 
-    def replier_booster_faver(self, status_id):
-        pass
+    def replier_booster_faver(self, status_id_list, reply):
+        boost_btn_xpath = '//*[contains(@aria-label,"Boost")]'
+        fav_btn_xpath = '//*[contains(@aria-label,"Favourite")]'
+        bmk_btn_xpath = '//*[contains(@aria-label,"Bookmark")]'
+        reply_btn_xpath = '//*[contains(@aria-label,"Reply")]'
+        toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
+        toot_btn_xpath = "//button[contains(.,'Toot!')]"
+
+        try:
+            for _ in range(12):
+                random_status_id = status_id_list[randint(0, len(status_id_list) - 1)]
+                status_link = f'https://mastodon.social/web/statuses/{random_status_id}'
+                self.driver.get(status_link)
+                gls.sleep_time()
+                reply_btn = self.driver.find_element_by_xpath(reply_btn_xpath)
+                gls.sleep_time()
+                reply_btn.click()
+
+                formatted_toot = f'yo {reply}'
+                print(formatted_toot)
+                gls.sleep_time()
+                self.driver.find_element_by_xpath(toot_text_xpath).send_keys(formatted_toot)
+                gls.sleep_time()
+                self.driver.find_element_by_xpath(toot_btn_xpath).click()
+
+                print("reply to status sent")
+                break
+
+        except Exception as em:
+            print('replier Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        try:
+            gls.sleep_time()
+            reply_btn = self.driver.find_element_by_xpath(boost_btn_xpath)
+            gls.sleep_time()
+            reply_btn.click()
+            print("reply boosted!")
+
+        except Exception as em:
+            print('boost Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        try:
+            gls.sleep_time()
+            reply_btn = self.driver.find_element_by_xpath(fav_btn_xpath)
+            gls.sleep_time()
+            reply_btn.click()
+            print("reply favd!")
+
+        except Exception as em:
+            print('fav Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        try:
+            gls.sleep_time()
+            reply_btn = self.driver.find_element_by_xpath(bmk_btn_xpath)
+            gls.sleep_time()
+            reply_btn.click()
+            print("reply bookmarked!")
+
+        except Exception as em:
+            print('bookmark Error occurred ' + str(em))
+            print(traceback.format_exc())
+
 
 if __name__ == '__main__':
 
@@ -209,8 +273,21 @@ if __name__ == '__main__':
         #
         # mst_bot.send_toots("https://mastodon.social/web/timelines/home", user_handle[1], random_comment)
 
-        status_ids = mst_bot.status_id_extractor()
+        # status_ids = mst_bot.status_id_extractor()
+        random_reply = mst_bot.response_generator()
+        status_ids = [
+            103731270571034037,
+            103731284288516481,
+            103731280223631601,
+            103731280650954806,
+            103731273436441760,
+            103731286598991295,
+            103731277118050812,
+            103731278577693065,
+            103731284318070802
+        ]
 
+        mst_bot.replier_booster_faver(status_ids, random_reply)
 
     mastodon_action_sequence()
 
