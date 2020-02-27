@@ -85,6 +85,29 @@ class MastodonBot:
             print(traceback.format_exc())
             pass
 
+    def send_toots(self, homepage, user_handle, single_comment):
+        toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
+        toot_btn_xpath = "//button[contains(.,'Toot!')]"
+
+        formatted_toot = f'hi @{user_handle} {single_comment}'
+        print(formatted_toot)
+        try:
+            gls.sleep_time()
+            self.driver.get(homepage)
+            gls.sleep_time()
+            self.driver.find_element_by_xpath(toot_text_xpath).send_keys(formatted_toot)
+            gls.sleep_time()
+            self.driver.find_element_by_xpath(toot_btn_xpath).click()
+
+            print("toot sent")
+
+        except Exception as em:
+            print('send_toots Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        finally:
+            print("send_toots() done")
+
     def profile_link_extractor(self):
         gls.sleep_time()
         sorted_prof_links_list = []
@@ -95,12 +118,20 @@ class MastodonBot:
             random_page_num = randint(5, 30000)
             admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
 
-            self.driver.get(admin_follower_page_link)
-            gls.sleep_time()
-            self.driver.execute_script("window.scrollBy(0,500)", "")
-            gls.sleep_time()
-            results = self.driver.find_elements_by_xpath('//a[@href]')
-            print(f"number of profile links extracted in this iteration: {len(results)}")
+            try:
+                self.driver.get(admin_follower_page_link)
+                gls.sleep_time()
+                self.driver.execute_script("window.scrollBy(0,500)", "")
+                gls.sleep_time()
+                results = self.driver.find_elements_by_xpath('//a[@href]')
+                print(f"number of profile links extracted in this iteration: {len(results)}")
+
+            except Exception as em:
+                print('profile_link_extractor Error occurred ' + str(em))
+                print(traceback.format_exc())
+
+            finally:
+                print("profile_link_extractor() done")
 
             for res in results:
                 final_link = res.get_attribute('href')
@@ -113,15 +144,22 @@ class MastodonBot:
         return sorted_prof_links_list
 
     def user_follower(self, profile_link):
-        follow_unfollow_btn_xpath = '//*[contains(@data-method,"post")]'
-        gls.sleep_time()
-        self.driver.get(profile_link)
-        gls.sleep_time()
-        follow_unfollow_element = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable((By.XPATH, follow_unfollow_btn_xpath)))
-        gls.sleep_time()
-        follow_unfollow_element.click()
-        print("user followed or unfollowed!")
+        try:
+            follow_unfollow_btn_xpath = '//*[contains(@data-method,"post")]'
+            gls.sleep_time()
+            self.driver.get(profile_link)
+            gls.sleep_time()
+            follow_unfollow_element = WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable((By.XPATH, follow_unfollow_btn_xpath)))
+            gls.sleep_time()
+            follow_unfollow_element.click()
+            print("user followed or unfollowed!")
 
+        except Exception as em:
+            print('user_follower Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        finally:
+            print("user_follower() done")
 
 
 if __name__ == '__main__':
@@ -129,14 +167,17 @@ if __name__ == '__main__':
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
 
-        # final_profile_link_list = mst_bot.profile_link_extractor()
-        #
-        # random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+        final_profile_link_list = mst_bot.profile_link_extractor()
 
-        mst_bot.user_follower('https://mastodon.social/@mondomike65')
+        random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
 
+        mst_bot.user_follower(random_prof_link)
 
+        random_comment = mst_bot.response_generator()
 
+        user_handle = random_prof_link.split('@')
+
+        mst_bot.send_toots("https://mastodon.social/web/timelines/home", user_handle[1], random_comment)
 
 
     mastodon_action_sequence()

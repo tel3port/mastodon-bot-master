@@ -24,3 +24,9 @@ def sleep_time():
     time.sleep(t)
 
     return t
+
+
+test = 'https://mastodon.social/@deadlyembrace'
+user_handle = test.split('@')
+
+print(f"@{user_handle[1]}")
