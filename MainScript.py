@@ -85,29 +85,6 @@ class MastodonBot:
             print(traceback.format_exc())
             pass
 
-    def send_toots(self, homepage, user_handle, single_comment):
-        toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
-        toot_btn_xpath = "//button[contains(.,'Toot!')]"
-
-        formatted_toot = f'hi @{user_handle} {single_comment}'
-        print(formatted_toot)
-        try:
-            gls.sleep_time()
-            self.driver.get(homepage)
-            gls.sleep_time()
-            self.driver.find_element_by_xpath(toot_text_xpath).send_keys(formatted_toot)
-            gls.sleep_time()
-            self.driver.find_element_by_xpath(toot_btn_xpath).click()
-
-            print("toot sent")
-
-        except Exception as em:
-            print('send_toots Error occurred ' + str(em))
-            print(traceback.format_exc())
-
-        finally:
-            print("send_toots() done")
-
     def profile_link_extractor(self):
         gls.sleep_time()
         sorted_prof_links_list = []
@@ -161,23 +138,78 @@ class MastodonBot:
         finally:
             print("user_follower() done")
 
+    def send_toots(self, homepage, user_handle, single_comment):
+        toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
+        toot_btn_xpath = "//button[contains(.,'Toot!')]"
+
+        formatted_toot = f'hi @{user_handle} {single_comment}'
+        print(formatted_toot)
+        try:
+            gls.sleep_time()
+            self.driver.get(homepage)
+            gls.sleep_time()
+            self.driver.find_element_by_xpath(toot_text_xpath).send_keys(formatted_toot)
+            gls.sleep_time()
+            self.driver.find_element_by_xpath(toot_btn_xpath).click()
+
+            print("toot sent")
+
+        except Exception as em:
+            print('send_toots Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        finally:
+            print("send_toots() done")
+
+    def status_id_extractor(self):
+        gls.sleep_time()
+        local_timeline_url = f"{self.base_url}web/timelines/public/local"
+        status_ids_set = set()
+
+        self.driver.execute_script("window.scrollBy(0,1000)", "")
+
+        try:
+            self.driver.get(local_timeline_url)
+            gls.sleep_time()
+
+            elements = self.driver.find_elements_by_tag_name('article')
+            gls.sleep_time()
+
+            for e in elements:
+                status_ids_set.add(e.get_attribute('data-id'))
+
+            gls.sleep_time()
+
+        except Exception as em:
+            print('status_id_extractor Error occurred ' + str(em))
+            print(traceback.format_exc())
+
+        finally:
+            print("status_id_extractor() done")
+
+        return list(status_ids_set)
+
+    def replier_booster_faver(self, status_id):
+        pass
 
 if __name__ == '__main__':
 
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
 
-        final_profile_link_list = mst_bot.profile_link_extractor()
+        # final_profile_link_list = mst_bot.profile_link_extractor()
+        #
+        # random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+        #
+        # mst_bot.user_follower(random_prof_link)
+        #
+        # random_comment = mst_bot.response_generator()
+        #
+        # user_handle = random_prof_link.split('@')
+        #
+        # mst_bot.send_toots("https://mastodon.social/web/timelines/home", user_handle[1], random_comment)
 
-        random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
-
-        mst_bot.user_follower(random_prof_link)
-
-        random_comment = mst_bot.response_generator()
-
-        user_handle = random_prof_link.split('@')
-
-        mst_bot.send_toots("https://mastodon.social/web/timelines/home", user_handle[1], random_comment)
+        status_ids = mst_bot.status_id_extractor()
 
 
     mastodon_action_sequence()
