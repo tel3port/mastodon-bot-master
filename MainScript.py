@@ -52,7 +52,7 @@ class MastodonBot:
     @staticmethod
     def response_generator():
         n = p.Sentence()
-        gend_sentence = f"This is kinda {random.choice(words.ADJECTIVES)}. {n}. Learn more at: {gls.single_lander_source()}"
+        gend_sentence = f"This is sorta {random.choice(words.ADJECTIVES)}. {n}. Learn more at: {gls.single_lander_source()}"
         random_comp = COMPLEMENTS[randint(0, len(COMPLEMENTS) - 1)]
         random_phrase = STATIC_PHRASES[randint(0, len(STATIC_PHRASES) - 1)]
         random_desc = DESCS[randint(0, len(DESCS) - 1)]
