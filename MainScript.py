@@ -90,7 +90,7 @@ class MastodonBot:
 
         prof_link_set = set()
 
-        for _ in range(500):
+        for _ in range(23):
             random_page_num = randint(5, 30000)
             admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
 
