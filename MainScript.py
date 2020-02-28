@@ -12,7 +12,6 @@ import traceback
 import random
 import heroku3
 import requests
-import schedule
 
 with open("dictionary/complements.txt") as compfile:
     global COMPLEMENTS
