@@ -12,8 +12,8 @@ import traceback
 import random
 import heroku3
 import requests
-
 import schedule
+
 with open("dictionary/complements.txt") as compfile:
     global COMPLEMENTS
     COMPLEMENTS = [line.strip() for line in compfile]
@@ -261,48 +261,37 @@ if __name__ == '__main__':
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
 
-        # final_profile_link_list = mst_bot.profile_link_extractor()
-        #
-        # random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
-        #
-        # mst_bot.user_follower(random_prof_link)
-        #
-        # random_comment = mst_bot.response_generator()
-        #
-        # user_handle = random_prof_link.split('@')
-        #
-        # mst_bot.send_toots("https://mastodon.social/web/timelines/home", user_handle[1], random_comment)
+        for _ in range(300):
 
-        # status_ids = mst_bot.status_id_extractor()
-        random_reply = mst_bot.response_generator()
-        status_ids = [
-            103731270571034037,
-            103731284288516481,
-            103731280223631601,
-            103731280650954806,
-            103731273436441760,
-            103731286598991295,
-            103731277118050812,
-            103731278577693065,
-            103731284318070802
-        ]
+            final_profile_link_list = mst_bot.profile_link_extractor()
 
-        mst_bot.replier_booster_faver(status_ids, random_reply)
+            random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+
+            mst_bot.user_follower(random_prof_link)
+
+            mst_bot.send_toots("https://mastodon.social/web/timelines/home",  random_prof_link.split('@')[1], mst_bot.response_generator())
+
+            mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
+
+        time.sleep(randint(25000, 29000))
+
+        mst_bot.restart_application()
+
 
     mastodon_action_sequence()
 
-    def custom_mastodon_scheduler():
-        try:
-            schedule.every().day.at("01:30").do(mastodon_action_sequence)
-
-            while True:
-                schedule.run_pending()
-                time.sleep(1)
-
-        except Exception as e:
-            print('custom_mastodon_scheduler Error occurred ' + str(e))
-            print(traceback.format_exc())
-            pass
+    # def custom_mastodon_scheduler():
+    #     try:
+    #         schedule.every().day.at("01:45").do(mastodon_action_sequence)
+    #
+    #         while True:
+    #             schedule.run_pending()
+    #             time.sleep(1)
+    #
+    #     except Exception as e:
+    #         print('custom_mastodon_scheduler Error occurred ' + str(e))
+    #         print(traceback.format_exc())
+    #         pass
 
 
     # def test_locally():
