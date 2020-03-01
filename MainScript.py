@@ -90,7 +90,7 @@ class MastodonBot:
 
         prof_link_set = set()
 
-        for _ in range(230):
+        for _ in range(23):
             random_page_num = randint(5, 30000)
             admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
 
@@ -259,20 +259,21 @@ if __name__ == '__main__':
 
     def mastodon_action_sequence():
         mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
-        final_profile_link_list = mst_bot.profile_link_extractor()
+        while 1:
+            final_profile_link_list = mst_bot.profile_link_extractor()
 
-        for _ in range(300):
-            random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
+            for _ in range(65):
+                random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
 
-            mst_bot.user_follower(random_prof_link)
+                mst_bot.user_follower(random_prof_link)
 
-            mst_bot.send_toots("https://mastodon.social/web/timelines/home",  random_prof_link.split('@')[1], mst_bot.response_generator())
+                mst_bot.send_toots("https://mastodon.social/web/timelines/home",  random_prof_link.split('@')[1], mst_bot.response_generator())
 
-            mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
+                mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
 
-        time.sleep(randint(25000, 29000))
+            time.sleep(randint(12000, 15000))
 
-        mst_bot.restart_application()
+            mst_bot.restart_application()
 
 
     mastodon_action_sequence()
