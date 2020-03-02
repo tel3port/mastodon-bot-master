@@ -93,7 +93,7 @@ class MastodonBot:
         for _ in range(23):
             random_page_num = randint(5, 30000)
             admin_follower_page_link = f'https://mastodon.social/users/Gargron/followers?page={random_page_num}'
-
+            results = []
             try:
                 self.driver.get(admin_follower_page_link)
                 gls.sleep_time()
@@ -277,22 +277,3 @@ if __name__ == '__main__':
 
 
     mastodon_action_sequence()
-
-    # def custom_mastodon_scheduler():
-    #     try:
-    #         schedule.every().day.at("01:45").do(mastodon_action_sequence)
-    #
-    #         while True:
-    #             schedule.run_pending()
-    #             time.sleep(1)
-    #
-    #     except Exception as e:
-    #         print('custom_mastodon_scheduler Error occurred ' + str(e))
-    #         print(traceback.format_exc())
-    #         pass
-
-
-    # def test_locally():
-    #     mastodon_action_sequence()
-    #
-    # test_locally()

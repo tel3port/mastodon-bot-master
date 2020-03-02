@@ -1,8 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="m">
     <words>
+      <w>chromedriver</w>
+      <w>compfile</w>
+      <w>descfile</w>
       <w>faver</w>
+      <w>phrasefile</w>
+      <w>prefs</w>
       <w>unfollow</w>
+      <w>unfollowed</w>
+      <w>webdriver</w>
     </words>
   </dictionary>
 </component>
