@@ -288,7 +288,7 @@ if __name__ == '__main__':
 
                 mst_bot.send_toots("https://mastodon.social/web/timelines/home",  random_prof_link.split('@')[1], mst_bot.response_generator())
 
-                mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
+                # mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
 
             t = randint(12000, 15000)
             print(f'sleeping for {t} seconds')
