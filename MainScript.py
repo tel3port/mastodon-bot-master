@@ -38,9 +38,9 @@ class MastodonBot:
         chrome_options.add_argument("--start-maximized")
         prefs = {"profile.managed_default_content_settings.images": 2}
         chrome_options.add_experimental_option("prefs", prefs)
-        chrome_options.add_argument("--headless")
-        self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-        # self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
+        # chrome_options.add_argument("--headless")
+        # self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+        self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
         self. base_url = "https://mastodon.social/"
         self.login()
 
@@ -215,7 +215,7 @@ class MastodonBot:
                 self.driver.find_element_by_xpath(toot_btn_xpath).click()
 
                 print("reply to status sent")
-                break
+
 
         except Exception as em:
             print('replier Error occurred ' + str(em))
@@ -262,7 +262,8 @@ if __name__ == '__main__':
         while 1:
             final_profile_link_list = mst_bot.profile_link_extractor()
 
-            for _ in range(65):
+            for i in range(100):
+                print(f'loop number {i}')
                 random_prof_link = final_profile_link_list[randint(0, len(final_profile_link_list) - 1)]
 
                 mst_bot.user_follower(random_prof_link)
@@ -271,7 +272,9 @@ if __name__ == '__main__':
 
                 mst_bot.replier_booster_faver(mst_bot.status_id_extractor(), mst_bot.response_generator())
 
-            time.sleep(randint(12000, 15000))
+            t = randint(12000, 15000)
+            print(f'sleeping for {t} seconds')
+            time.sleep(t)
 
             mst_bot.restart_application()
 
