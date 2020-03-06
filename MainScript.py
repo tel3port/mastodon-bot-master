@@ -37,9 +37,9 @@ class MastodonBot:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument('window-size=2560,1440')
-        # chrome_options.add_argument("--headless")
-        # self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-        self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
+        chrome_options.add_argument("--headless")
+        self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+        # self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
         self. base_url = "https://mastodon.social/"
         self.login()
 
