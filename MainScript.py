@@ -36,6 +36,7 @@ class MastodonBot:
         chrome_options.add_argument("--disable-dev-sgm-usage")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument("--disable-extensions")
         chrome_options.add_argument('window-size=2560,1440')
         chrome_options.add_argument("--headless")
         self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
@@ -61,7 +62,6 @@ class MastodonBot:
         return response_list[randint(0, len(response_list) - 1)]
 
     def login(self):
-        self.driver.maximize_window()
         print("session id at login: ", self.driver.session_id)
 
         login_btn_xpath = "//button[contains(.,'Log in')]"
@@ -79,6 +79,11 @@ class MastodonBot:
             self.driver.find_element_by_xpath(login_btn_xpath).click()
 
             print("login success...")
+            gls.sleep_time()
+            self.driver.maximize_window()
+            gls.sleep_time()
+
+            print(f' current window size: {self.driver.get_window_size()}')
         except Exception as e:
             print("the login issue is: ", e)
             print(traceback.format_exc())
@@ -142,6 +147,8 @@ class MastodonBot:
             print("user_follower() done")
 
     def send_toots(self, homepage, user_handle, single_comment):
+        print(f' current window size at send toots: {self.driver.get_window_size()}')
+
         print("session id at send_toots: ", self.driver.session_id)
 
         toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
@@ -198,6 +205,8 @@ class MastodonBot:
         return list(status_ids_set)
 
     def replier_booster_faver(self, status_id_list, reply):
+        print(f' current window size at replier_booster_faver : {self.driver.get_window_size()}')
+
         print("session id at replier_booster_faver: ", self.driver.session_id)
 
         boost_btn_xpath = '//*[contains(@aria-label,"Boost")]'
