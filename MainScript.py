@@ -85,6 +85,8 @@ class MastodonBot:
             pass
 
     def profile_link_extractor(self):
+        print("session id at profile_link_extractor: ", self.driver.session_id)
+
         gls.sleep_time()
         sorted_prof_links_list = []
 
@@ -120,6 +122,8 @@ class MastodonBot:
         return sorted_prof_links_list
 
     def user_follower(self, profile_link):
+        print("session id at user_follower: ", self.driver.session_id)
+
         try:
             follow_unfollow_btn_xpath = '//*[contains(@data-method,"post")]'
             gls.sleep_time()
@@ -138,6 +142,8 @@ class MastodonBot:
             print("user_follower() done")
 
     def send_toots(self, homepage, user_handle, single_comment):
+        print("session id at send_toots: ", self.driver.session_id)
+
         toot_text_xpath = '//*[contains(@placeholder,"on your mind?")]'
         toot_btn_xpath = "//button[contains(.,'Toot!')]"
 
@@ -162,6 +168,8 @@ class MastodonBot:
             print("send_toots() done")
 
     def status_id_extractor(self):
+        print("session id at status_id_extractor: ", self.driver.session_id)
+
         gls.sleep_time()
         local_timeline_url = f"{self.base_url}web/timelines/public/local"
         status_ids_set = set()
@@ -190,6 +198,8 @@ class MastodonBot:
         return list(status_ids_set)
 
     def replier_booster_faver(self, status_id_list, reply):
+        print("session id at replier_booster_faver: ", self.driver.session_id)
+
         boost_btn_xpath = '//*[contains(@aria-label,"Boost")]'
         fav_btn_xpath = '//*[contains(@aria-label,"Favourite")]'
         bmk_btn_xpath = '//*[contains(@aria-label,"Bookmark")]'
