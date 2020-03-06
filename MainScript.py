@@ -38,9 +38,9 @@ class MastodonBot:
         chrome_options.add_argument("--start-maximized")
         prefs = {"profile.managed_default_content_settings.images": 2}
         chrome_options.add_experimental_option("prefs", prefs)
-        # chrome_options.add_argument("--headless")
-        # self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-        self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
+        chrome_options.add_argument("--headless")
+        self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+        # self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
         self. base_url = "https://mastodon.social/"
         self.login()
 
@@ -215,7 +215,6 @@ class MastodonBot:
                 self.driver.find_element_by_xpath(toot_btn_xpath).click()
 
                 print("reply to status sent")
-
 
         except Exception as em:
             print('replier Error occurred ' + str(em))
