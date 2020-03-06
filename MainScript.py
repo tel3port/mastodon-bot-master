@@ -35,9 +35,9 @@ class MastodonBot:
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         chrome_options.add_argument("--disable-dev-sgm-usage")
         chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--start-maximized")
-        prefs = {"profile.managed_default_content_settings.images": 2}
-        chrome_options.add_experimental_option("prefs", prefs)
+        # chrome_options.add_argument("--start-maximized")
+        # prefs = {"profile.managed_default_content_settings.images": 2}
+        # chrome_options.add_experimental_option("prefs", prefs)
         chrome_options.add_argument("--headless")
         self.driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
         # self.driver = webdriver.Chrome("./chromedriver", options=chrome_options)
