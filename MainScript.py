@@ -276,7 +276,7 @@ class MastodonBot:
 if __name__ == '__main__':
 
     def mastodon_action_sequence():
-        mst_bot = MastodonBot("2ksaber@gmail.com", "AWR3A9C7FL$-4n3", 'mastodon-bot-master')
+        mst_bot = MastodonBot("2ksdsfdaber@gmail.com", "AWRfsdfsf3A9C7FL$-4n3", 'mastodon-bot-master')
         while 1:
             final_profile_link_list = mst_bot.profile_link_extractor()
 
